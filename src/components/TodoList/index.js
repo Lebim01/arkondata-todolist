@@ -2,11 +2,13 @@ import { useState } from 'react'
 import List from '@material-ui/core/List'
 import Divider from '@material-ui/core/Divider'
 import { makeStyles } from '@material-ui/core/styles';
-import TodoItem from 'src/components/TodoItem'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { Card, CardContent, Typography } from '@material-ui/core';
 import { reorder } from 'src/helpers/array'
 import styled from 'styled-components'
+
+import TodoItem from 'src/components/TodoItem'
+import TodoItemInput from 'src/components/TodoItem/TodoItemInput'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -80,8 +82,8 @@ const TodoList = () => {
                             >
                                 <DropZone ref={dropProvided.innerRef}>
                                     {items.map((r, i) =>
-                                        <>
-                                            <Draggable key={i} draggableId={i.toString()} index={i}>
+                                        <div key={i}>
+                                            <Draggable draggableId={i.toString()} index={i}>
                                                 {(dragProvided, dragSnapshot) => 
                                                     <TodoItem 
                                                         idx={i} 
@@ -92,11 +94,13 @@ const TodoList = () => {
                                                     />  
                                                 }
                                             </Draggable>
-                                            { i+1 < items.length && <Divider /> }
-                                        </>
+                                            <Divider />
+                                        </div>
                                     )}
                                     {dropProvided.placeholder}
                                 </DropZone>
+                                <TodoItemInput />
+                                <Divider />
                             </List>
                         }
                     </Droppable>

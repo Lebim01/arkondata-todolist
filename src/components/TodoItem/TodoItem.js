@@ -27,7 +27,7 @@ const TodoItem = React.memo(({ provided, ...props }) => {
     };
 
     const labelId = `checkbox-list-label-${props.idx}`;
-
+    
     return (
         <div
             ref={provided.innerRef}
