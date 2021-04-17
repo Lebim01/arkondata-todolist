@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
@@ -19,7 +19,7 @@ function getStyle(provided, style) {
     };
 }
 
-const TodoItem = ({ provided, ...props }) => {
+const TodoItem = React.memo(({ provided, ...props }) => {
     const [checked, setChecked] = useState(false);
 
     const handleToggle = () => {
@@ -29,10 +29,7 @@ const TodoItem = ({ provided, ...props }) => {
     const labelId = `checkbox-list-label-${props.idx}`;
 
     return (
-        <ListItem 
-            key={props.idx} 
-            role={undefined} 
-            dense 
+        <div
             ref={provided.innerRef}
             isDragging={props.isDragging}
             isGroupedOver={props.isGroupedOver}
@@ -43,27 +40,32 @@ const TodoItem = ({ provided, ...props }) => {
             data-index={props.idx}
             aria-label={props.title}
         >
-            <ListItemIcon>
-                <IconButton edge="end" aria-label="comments" {...provided.dragHandleProps}>
-                    <DragIndicatorIcon />
-                </IconButton>
-            </ListItemIcon>
-            <ListItemText id={labelId} primary={props.title} />
-            <ListItemSecondaryAction>
-                <Checkbox
-                    edge="start"
-                    checked={checked}
-                    tabIndex={-1}
-                    disableRipple
-                    onClick={handleToggle}
-                    inputProps={{ 'aria-labelledby': labelId }}
-                />
-                <IconButton edge="end" aria-label="comments">
-                    <MoreVerticalIcon />
-                </IconButton>
-            </ListItemSecondaryAction>
-        </ListItem>
+            <ListItem 
+                role={undefined}
+                dense
+            >
+                <ListItemIcon>
+                    <IconButton edge="end" aria-label="comments" {...provided.dragHandleProps}>
+                        <DragIndicatorIcon />
+                    </IconButton>
+                </ListItemIcon>
+                <ListItemText id={labelId} primary={props.title} />
+                <ListItemSecondaryAction>
+                    <Checkbox
+                        edge="start"
+                        checked={checked}
+                        tabIndex={-1}
+                        disableRipple
+                        onClick={handleToggle}
+                        inputProps={{ 'aria-labelledby': labelId }}
+                    />
+                    <IconButton edge="end" aria-label="comments">
+                        <MoreVerticalIcon />
+                    </IconButton>
+                </ListItemSecondaryAction>
+            </ListItem>
+        </div>
     )
-}
+})
 
 export default TodoItem

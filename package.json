@@ -10,7 +10,8 @@
     "prop-types": "latest",
     "react": "latest",
     "react-beautiful-dnd": "^13.1.0",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "styled-components": "^5.2.3"
   },
   "scripts": {
     "dev": "next",

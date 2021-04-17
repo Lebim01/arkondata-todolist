@@ -6,12 +6,16 @@ import TodoItem from 'src/components/TodoItem'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { Card, CardContent, Typography } from '@material-ui/core';
 import { reorder } from 'src/helpers/array'
+import styled from 'styled-components'
 
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%'
     },
 }));
+
+const DropZone = styled.div``;
+
 
 const TodoList = () => {
     const classes = useStyles();
@@ -61,26 +65,38 @@ const TodoList = () => {
                     Listado de tareas
                 </Typography>
                 <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
-                    <Droppable droppableId="list">
+                    <Droppable droppableId="list" type={''}>
+                        {
+                            /**
+                             * Droppable Wrapper
+                             */
+                        }
                         {(dropProvided, dropSnapshot) => 
-                            <List className={classes.root}>
-                                {items.map((r, i) =>
-                                    <>
-                                        <Draggable key={i} draggableId={i.toString()} index={i}>
-                                            {(dragProvided, dragSnapshot) => 
-                                                <TodoItem 
-                                                    idx={i} 
-                                                    {...r} 
-                                                    provided={dragProvided} 
-                                                    isDragging={dragSnapshot.isDragging}
-                                                    isGroupedOver={Boolean(dragSnapshot.combineTargetFor)}
-                                                />  
-                                            }
-                                        </Draggable>
-                                        { i+1 < items.length && <Divider /> }
-                                    </>
-                                )}
-                                
+                            <List 
+                                className={classes.root} 
+                                isDraggingOver={dropSnapshot.isDraggingOver}
+                                isDraggingFrom={Boolean(dropSnapshot.draggingFromThisWith)}
+                                {...dropProvided.droppableProps}
+                            >
+                                <DropZone ref={dropProvided.innerRef}>
+                                    {items.map((r, i) =>
+                                        <>
+                                            <Draggable key={i} draggableId={i.toString()} index={i}>
+                                                {(dragProvided, dragSnapshot) => 
+                                                    <TodoItem 
+                                                        idx={i} 
+                                                        {...r} 
+                                                        provided={dragProvided} 
+                                                        isDragging={dragSnapshot.isDragging}
+                                                        isGroupedOver={Boolean(dragSnapshot.combineTargetFor)}
+                                                    />  
+                                                }
+                                            </Draggable>
+                                            { i+1 < items.length && <Divider /> }
+                                        </>
+                                    )}
+                                    {dropProvided.placeholder}
+                                </DropZone>
                             </List>
                         }
                     </Droppable>
