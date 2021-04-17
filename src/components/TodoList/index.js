@@ -99,7 +99,7 @@ const TodoList = () => {
                                     )}
                                     {dropProvided.placeholder}
                                 </DropZone>
-                                <TodoItemInput />
+                                <TodoItemInput onAdd={(item) => setItems([...items, item])} />
                                 <Divider />
                             </List>
                         }

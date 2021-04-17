@@ -6,7 +6,12 @@ import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add'
 
 const TodoItem = React.memo(({ provided, ...props }) => {
-    const [checked, setChecked] = useState(false);
+    const onEnter = (e) => {
+        if(e.target.value)
+        if(e.key === 'Enter'){
+            props.onAdd && props.onAdd({ title: e.target.value })
+        }
+    }
 
     
     return (
@@ -16,7 +21,11 @@ const TodoItem = React.memo(({ provided, ...props }) => {
                     <AddIcon />
                 </IconButton>
             </ListItemIcon>
-            <InputBase style={{ width: '100%' }} placeholder="Elemento de la lista" />
+            <InputBase 
+                style={{ width: '100%' }} 
+                placeholder="Elemento de la lista" 
+                onKeyPress={onEnter}
+            />
         </ListItem>
     )
 })
