@@ -10,6 +10,7 @@ const TodoItem = React.memo(({ provided, ...props }) => {
         if(e.target.value)
         if(e.key === 'Enter'){
             props.onAdd && props.onAdd({ title: e.target.value })
+            e.target.value = ''
         }
     }
 
