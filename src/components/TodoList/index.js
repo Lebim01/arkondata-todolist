@@ -4,11 +4,14 @@ import Divider from '@material-ui/core/Divider'
 import { makeStyles } from '@material-ui/core/styles';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { Card, CardContent, Typography } from '@material-ui/core';
-import { reorder } from 'src/helpers/array'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
+
+import { addTodo, reorderTodo } from 'src/redux/actions/todos'
 
 import TodoItem from 'src/components/TodoItem'
 import TodoItemInput from 'src/components/TodoItem/TodoItemInput'
+import TodoListCompleted from '../TodoListCompleted';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -19,19 +22,8 @@ const useStyles = makeStyles((theme) => ({
 const DropZone = styled.div``;
 
 
-const TodoList = () => {
+const TodoList = ({ todos, addTodo, reorder, ...props }) => {
     const classes = useStyles();
-    const [items, setItems] = useState([
-        {
-            title: 'Item #1',
-        },
-        {
-            title: 'Item #2',
-        },
-        {
-            title: 'Item #3',
-        }
-    ])
 
     function onDragStart() {
         // Add a little vibration if the browser supports it.
@@ -44,20 +36,17 @@ const TodoList = () => {
       function onDragEnd(result) {
         // dropped outside the list
         if (!result.destination) {
-          return;
+            return;
         }
     
         if (result.destination.index === result.source.index) {
-          return;
+            return;
         }
     
-        const newItems = reorder(
-          items,
-          result.source.index,
-          result.destination.index,
+        reorder(
+            result.source.index,
+            result.destination.index
         );
-    
-        setItems(newItems);
     }
 
     return (
@@ -81,16 +70,17 @@ const TodoList = () => {
                                 {...dropProvided.droppableProps}
                             >
                                 <DropZone ref={dropProvided.innerRef}>
-                                    {items.map((r, i) =>
-                                        <div key={i}>
-                                            <Draggable draggableId={i.toString()} index={i}>
+                                    {todos.map((todo, i) =>
+                                        <div key={todo.uuid}>
+                                            <Draggable draggableId={todo.uuid} index={i}>
                                                 {(dragProvided, dragSnapshot) => 
                                                     <TodoItem 
-                                                        idx={i} 
-                                                        {...r} 
+                                                        idx={i}
+                                                        uuid={todo.uuid}
                                                         provided={dragProvided} 
                                                         isDragging={dragSnapshot.isDragging}
                                                         isGroupedOver={Boolean(dragSnapshot.combineTargetFor)}
+                                                        draggable
                                                     />  
                                                 }
                                             </Draggable>
@@ -99,15 +89,33 @@ const TodoList = () => {
                                     )}
                                     {dropProvided.placeholder}
                                 </DropZone>
-                                <TodoItemInput onAdd={(item) => setItems([...items, item])} />
+                                <TodoItemInput onAdd={addTodo} />
                                 <Divider />
                             </List>
                         }
                     </Droppable>
                 </DragDropContext>
+
+
+                <Typography variant="h6">
+                    Tareas completadas
+                </Typography>
+
+                <TodoListCompleted />
             </CardContent>
         </Card>
     )
 }
 
-export default TodoList
+const mapStateToProps = (state) => ({
+    todos: state.todos.todos.filter(r => r.completed === false)
+})
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addTodo: (item) => dispatch(addTodo(item)),
+        reorder: (from, to) => dispatch(reorderTodo(from, to))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoList)
