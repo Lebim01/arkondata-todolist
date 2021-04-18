@@ -96,19 +96,15 @@ const TodoList = ({ todos, addTodo, reorder, ...props }) => {
                     </Droppable>
                 </DragDropContext>
 
-
-                <Typography variant="h6">
-                    Tareas completadas
-                </Typography>
-
-                <TodoListCompleted />
+                { props.hasCompleted && <TodoListCompleted /> }
             </CardContent>
         </Card>
     )
 }
 
 const mapStateToProps = (state) => ({
-    todos: state.todos.todos.filter(r => r.completed === false)
+    todos: state.todos.todos.filter(r => r.completed === false),
+    hasCompleted: state.todos.todos.find(r => r.completed === true)
 })
 
 const mapDispatchToProps = (dispatch) => {
