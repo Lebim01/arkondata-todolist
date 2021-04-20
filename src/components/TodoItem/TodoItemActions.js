@@ -37,9 +37,10 @@ const TodoItemActions = (props) => {
 
     useEffect(() => {
         if(todo.active){
-            console.log(todo)
             reset()
             start()
+        }else{
+            pause()
         }
     }, [todo.active, todo.start_at])
 

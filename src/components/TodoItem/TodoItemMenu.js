@@ -88,6 +88,13 @@ const TodoItemMenu = (props) => {
         handleClose()
     }
 
+    const pause = () => {
+        updateTodo({
+            active: false
+        })
+        handleClose()
+    }
+
     return (
         <>
             <IconButton edge="end" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
@@ -119,7 +126,7 @@ const TodoItemMenu = (props) => {
                                     </ListItemIcon>
                                     <ListItemText>Reiniciar</ListItemText>
                                 </StyledMenuItem>
-                                <StyledMenuItem onClick={handleClose}>
+                                <StyledMenuItem onClick={pause}>
                                     <ListItemIcon>
                                         <PauseIcon fontSize="small" />
                                     </ListItemIcon>
