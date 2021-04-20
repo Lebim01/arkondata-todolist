@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { makeStyles, Chip, Menu, MenuItem } from '@material-ui/core'
+import { makeStyles, Chip, Menu, MenuItem, Tooltip } from '@material-ui/core'
 
 import { connect } from 'react-redux'
 
@@ -63,8 +63,16 @@ const DurationChip = ({ duration, durations, ...props }) => {
         <>
             <div className={classes.root}>
                 {duration.title 
-                    ? <Chip label={duration.title} className={classes[duration.color]} onClick={handleClick} />
-                    : <Chip label={'Duración'} color="danger" onClick={handleClick} />
+                    ? (
+                        <Tooltip title={`Duración (${duration.description})`}>
+                            <Chip label={duration.title} className={classes[duration.color]} onClick={handleClick} />
+                        </Tooltip>
+                    )
+                    : (
+                        <Tooltip title={`Seleccione la duración`}>
+                            <Chip label={'Duración'} color="danger" onClick={handleClick} />
+                        </Tooltip>
+                    )
                 }
             </div>
             <Menu

@@ -1,9 +1,6 @@
 import React from 'react'
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import Checkbox from '@material-ui/core/Checkbox';
+import { ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, Checkbox, Tooltip } from '@material-ui/core'
+
 import IconButton from '@material-ui/core/IconButton';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator'
 
@@ -67,14 +64,16 @@ const TodoItem = React.memo(({ todo, provided, ...props }) => {
                     <ListItemText id={labelId} primary={todo.title} />
                     <ListItemSecondaryAction>
                         <DurationChip duration={todo.duration} editable onSelect={selectDuration} />
-                        <Checkbox
-                            edge="start"
-                            checked={todo.completed}
-                            tabIndex={-1}
-                            disableRipple
-                            onClick={handleToggle}
-                            inputProps={{ 'aria-labelledby': labelId }}
-                        />
+                        <Tooltip title="Marcar como completada">
+                            <Checkbox
+                                edge="start"
+                                checked={todo.completed}
+                                tabIndex={-1}
+                                disableRipple
+                                onClick={handleToggle}
+                                inputProps={{ 'aria-labelledby': labelId }}
+                            />
+                        </Tooltip>
                         <TodoItemMenu completed={todo.completed} />
                     </ListItemSecondaryAction>
                 </ListItem>
