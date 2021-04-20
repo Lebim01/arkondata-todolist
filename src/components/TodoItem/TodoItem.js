@@ -15,7 +15,7 @@ const TodoItem = React.memo((props) => {
     const { provided } = useDraggable()
 
     return (
-        <ListItem dense={!!props.draggable}>
+        <ListItem dense={!!props.draggable} selected={todo.active}>
             {props.draggable &&
                 <ListItemIcon>
                     <IconButton edge="end" aria-label="comments" {...provided.dragHandleProps}>

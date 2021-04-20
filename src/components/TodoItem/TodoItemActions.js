@@ -4,28 +4,20 @@ import { useTodo } from 'src/context/todo'
 import TodoItemMenu from './TodoItemMenu'
 import DurationChip from './components/DurationChip'
 
-// Redux
-import { updateTodo } from 'src/redux/actions/todos'
-import { connect } from 'react-redux'
-
 const TodoItemActions = (props) => {
-    const { todo } = useTodo()
+    const { todo, updateTodo } = useTodo()
 
     const handleToggle = () => {
-        props.updateTodo && 
-            props.updateTodo({
-                ...todo,
-                completed: !todo.completed,
-                completed_at: !todo.completed ? new Date() : null
-            })
+        updateTodo({
+            completed: !todo.completed,
+            completed_at: !todo.completed ? new Date() : null
+        })
     };
 
     const selectDuration = (duration) => {
-        props.updateTodo &&
-            props.updateTodo({
-                ...todo,
-                duration
-            })
+        updateTodo({
+            duration
+        })
     }
 
     return (
@@ -45,10 +37,4 @@ const TodoItemActions = (props) => {
     )
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        updateTodo: (item) => dispatch(updateTodo(item))
-    }
-}
-
-export default connect(null, mapDispatchToProps)(TodoItemActions)
+export default TodoItemActions

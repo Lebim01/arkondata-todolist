@@ -9,7 +9,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { connect } from 'react-redux'
 
 import TodoItem from 'src/components/TodoItem'
-import DragDropContextProvider from 'src/context/draggable';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -33,13 +32,11 @@ const TodoListCompleted = ({ todos, ...props }) => {
                 <List className={classes.root}>
                     {todos.map((todo, i) =>
                         <div key={todo.uuid}>
-                            <DragDropContextProvider>
-                                <TodoItem 
-                                    idx={i}
-                                    uuid={todo.uuid}
-                                />  
-                                <Divider />
-                            </DragDropContextProvider>
+                            <TodoItem 
+                                idx={i}
+                                uuid={todo.uuid}
+                            />  
+                            <Divider />
                         </div>
                     )}
                 </List>

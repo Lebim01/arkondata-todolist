@@ -21,9 +21,9 @@ const StyledMenuItem = withStyles((theme) => ({
     },
 }))(MenuItem);
 
-const TodoItemMenu = () => {
+const TodoItemMenu = (props) => {
     const [anchorEl, setAnchorEl] = useState(null);
-    const { todo }  = useTodo()
+    const { todo, updateTodo }  = useTodo()
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -32,6 +32,14 @@ const TodoItemMenu = () => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const start = () => {
+        updateTodo({
+            active: true,
+            start_at: new Date()
+        })
+        handleClose()
+    }
 
     return (
         <>
@@ -48,7 +56,7 @@ const TodoItemMenu = () => {
                 { !todo.completed &&
                     <>
                         <Typography style={{ paddingLeft: 16 }} variant="subtitle2">Temporizador</Typography>
-                        <StyledMenuItem onClick={handleClose}>
+                        <StyledMenuItem onClick={start}>
                             <ListItemIcon>
                                 <PlayIcon fontSize="small" />
                             </ListItemIcon>

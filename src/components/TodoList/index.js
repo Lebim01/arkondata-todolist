@@ -11,7 +11,7 @@ import TodoListItemDraggable from './TodoListItemDraggable';
 import TodoListDraggable from './TodoList'
 
 /**
- * Esta es el area permitida para arrastrar elementos
+ * Este es el area permitida para arrastrar elementos
  */
 const DropZone = styled.div``;
 
@@ -25,6 +25,22 @@ const TodoList = ({ todos, addTodo, ...props }) => {
                 <TodoListDraggable>
                     {(dropProvided) => 
                         <>
+                            {/**
+                             * Display active Todo
+                             */}
+                            {props.activeTodo &&
+                                <>
+                                    <TodoItem
+                                        uuid={props.activeTodo.uuid}
+                                        active
+                                    />
+                                    <Divider />
+                                </>
+                            }
+
+                            {/**
+                             * TodoList draggable area
+                             */}
                             <DropZone ref={dropProvided.innerRef}>
                                 {todos.map((todo, i) =>
                                     <>
@@ -40,6 +56,10 @@ const TodoList = ({ todos, addTodo, ...props }) => {
                                 )}
                                 {dropProvided.placeholder}
                             </DropZone>
+                            
+                            {/**
+                             * Input new Todo
+                             */}
                             <TodoItemInputNew onAdd={addTodo} />
                             <Divider />
                         </>
@@ -53,7 +73,8 @@ const TodoList = ({ todos, addTodo, ...props }) => {
 }
 
 const mapStateToProps = (state) => ({
-    todos: state.todos.todos.filter(r => r.completed === false),
+    activeTodo: state.todos.todos.find(r => r.active === true),
+    todos: state.todos.todos.filter(r => r.completed === false && !r.active),
     hasCompleted: state.todos.todos.find(r => r.completed === true)
 })
 
