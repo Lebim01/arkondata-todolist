@@ -19,8 +19,6 @@ const TodoItemDraggableContainer = (props) => {
     return (
         <div
             ref={provided.innerRef}
-            isDragging={isDragging}
-            isGroupedOver={isGroupedOver}
             {...provided.draggableProps}
             style={getStyle(provided, {})}
             data-is-dragging={isDragging}

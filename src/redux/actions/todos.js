@@ -11,7 +11,9 @@ export const addTodo = (item) => {
         type: ACTIONS.ADD_TODO,
         payload: {
             ...item,
-            uuid: uuid()
+            uuid: uuid(),
+            progress: 0,
+            active: false,
         }
     }
 }

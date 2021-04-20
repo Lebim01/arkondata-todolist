@@ -1,8 +1,8 @@
 import { createContext, useContext, useState } from 'react'
 
-export const ConfirmContext = createContext()
+export const DialogContext = createContext()
 
-const ConfirmContextProvider = (props) => {
+const DialogContextProvider = (props) => {
     const [isOpen, setOpen] = useState(false)
     const [config, setConfig] = useState({ title: '', description: '' })
 
@@ -11,23 +11,21 @@ const ConfirmContextProvider = (props) => {
         setConfig(config)
     }
 
-    const close = (result = false) => {
-        config.result(result)
-
+    const close = () => {
         setOpen(false)
         setConfig({ title: '', description: '' })
     }
 
     return (
-        <ConfirmContext.Provider value={{ isOpen, open, close, config }}>
+        <DialogContext.Provider value={{ isOpen, open, close, config }}>
             {props.children}
-        </ConfirmContext.Provider>
+        </DialogContext.Provider>
     )
 }
 
-export function useConfirm() {
-    const context = useContext(ConfirmContext)
+export function useDialog() {
+    const context = useContext(DialogContext)
     return context
 };
 
-export default ConfirmContextProvider
+export default DialogContextProvider

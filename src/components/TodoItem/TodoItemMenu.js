@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import _ from 'lodash'
 import { IconButton, Menu, MenuItem, Divider, ListItemText, ListItemIcon, withStyles, Typography } from '@material-ui/core'
 import MoreVerticalIcon from '@material-ui/icons/MoreVert'
 import TrashIcon from '@material-ui/icons/Delete'
@@ -12,6 +13,7 @@ import { connect } from 'react-redux'
 import { updateTodo } from 'src/redux/actions/todos'
 
 import { useConfirm } from 'src/context/confirm'
+import { useDialog } from 'src/context/dialog'
 import { useTodo } from 'src/context/todo'
 
 const StyledMenuItem = withStyles((theme) => ({
@@ -28,7 +30,8 @@ const StyledMenuItem = withStyles((theme) => ({
 const TodoItemMenu = (props) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const { todo, updateTodo }  = useTodo()
-    const { open } = useConfirm()
+    const { open: openConfirm } = useConfirm()
+    const { open: openDialog } = useDialog()
 
     const isActive = props.active && todo.uuid === props.active.uuid
 
@@ -41,8 +44,14 @@ const TodoItemMenu = (props) => {
     };
 
     const start = () => {
-        if(props.active && !isActive){
-            open({
+        if(_.isEmpty(todo.duration)){
+            openDialog({
+                title: 'Aviso',
+                description: 'Debe seleccionar una duración para esta tarea antes de poder iniciarla'
+            })
+        }
+        else if(props.active && !isActive){
+            openConfirm({
                 title: 'Confirmar',
                 description: 'Actualmente existe una tarea en curso ¿desea detenerla e iniciar esta?',
                 result: (result) => {
@@ -55,6 +64,7 @@ const TodoItemMenu = (props) => {
                             active: true,
                             start_at: new Date()
                         })
+                        handleClose()
                     }
                 }
             })
@@ -68,6 +78,14 @@ const TodoItemMenu = (props) => {
             })
             handleClose()
         }
+    }
+
+    const restart = () => {
+        updateTodo({
+            start_at: new Date(),
+            progress: 0
+        })
+        handleClose()
     }
 
     return (
@@ -95,7 +113,7 @@ const TodoItemMenu = (props) => {
                         }
                         { isActive &&
                             <>
-                                <StyledMenuItem onClick={handleClose}>
+                                <StyledMenuItem onClick={restart}>
                                     <ListItemIcon>
                                         <RestartIcon fontSize="small" />
                                     </ListItemIcon>

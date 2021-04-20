@@ -3,17 +3,20 @@ const INITIAL_STATE = {
         {
             title: 'Corto',
             description: '-30m',
-            color: 'success'
+            color: 'success',
+            secDuration: 30 * 60
         },
         {
             title: 'Medio',
             description: '30m - 1h',
-            color: 'info'
+            color: 'info',
+            secDuration: 60 * 60
         },
         {
             title: 'Largo',
             description: '1h+',
-            color: 'warning'
+            color: 'warning',
+            secDuration: 2 * 60 * 60
         }
     ]
 }
