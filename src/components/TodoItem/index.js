@@ -1,20 +1,26 @@
-import TodoItem from './TodoItem'
+import TodoItemContent from './TodoItem'
+import TodoItemDraggableContainer from './TodoItemDraggableContainer'
 import TodoContextProvider from 'src/context/todo'
 import { connect } from 'react-redux'
 
-const TodoItemContainer = (props) => {
+const TodoItem = (props) => {
     if(!props.todo) return null
 
+    if(props.draggable){
+        return (
+            <TodoContextProvider todo={props.todo}>
+                <TodoItemDraggableContainer {...props}>
+                    <TodoItemContent draggable />
+                </TodoItemDraggableContainer>
+            </TodoContextProvider>
+        )
+    }
+    
     return (
         <TodoContextProvider todo={props.todo}>
-            <TodoItem {...props} />
+            <TodoItemContent {...props} />
         </TodoContextProvider>
     )
-}
-
-TodoItemContainer.defaultProps = {
-    title: '',
-    idx: 1
 }
 
 const mapStateToProps = (state, props) => {
@@ -23,4 +29,4 @@ const mapStateToProps = (state, props) => {
     }
 }
 
-export default connect(mapStateToProps)(TodoItemContainer)
+export default connect(mapStateToProps)(TodoItem)

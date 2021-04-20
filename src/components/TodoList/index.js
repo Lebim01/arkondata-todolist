@@ -55,11 +55,6 @@ const TodoList = ({ todos, addTodo, reorder, ...props }) => {
                 </Typography>
                 <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
                     <Droppable droppableId="list" type={''}>
-                        {
-                            /**
-                             * Droppable Wrapper
-                             */
-                        }
                         {(dropProvided, dropSnapshot) => 
                             <List 
                                 className={classes.root} 
