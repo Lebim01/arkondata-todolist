@@ -86,7 +86,7 @@ const TodoItem = React.memo(({ todo, provided, ...props }) => {
         <ListItem>
             <ListItemText id={labelId} primary={todo.title} />
             <ListItemSecondaryAction>
-                <DurationChip type={todo.duration} />
+                <DurationChip duration={todo.duration} />
                 <Checkbox
                     edge="start"
                     checked={todo.completed}
