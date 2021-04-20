@@ -46,7 +46,7 @@ const TodoListCompleted = ({ todos, ...props }) => {
 }
 
 const mapStateToProps = (state) => ({
-    todos: state.todos.todos.filter(r => r.completed === true)
+    todos: state.todos.todos.filter(r => r.completed === true).sort((a, b) => b.completed_at - a.completed_at)
 })
 
 export default connect(mapStateToProps)(TodoListCompleted)

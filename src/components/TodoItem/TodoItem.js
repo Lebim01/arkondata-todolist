@@ -5,8 +5,10 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
-import MoreVerticalIcon from '@material-ui/icons/MoreVert';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator'
+
+import TodoItemMenu from './TodoItemMenu'
+import DurationChip from './DurationChip'
 
 import { updateTodo } from 'src/redux/actions/todos'
 import { connect } from 'react-redux'
@@ -28,7 +30,8 @@ const TodoItem = React.memo(({ todo, provided, ...props }) => {
         props.updateTodo && 
             props.updateTodo({
                 ...todo,
-                completed: !todo.completed
+                completed: !todo.completed,
+                completed_at: !todo.completed ? new Date() : null
             })
     };
 
@@ -55,6 +58,7 @@ const TodoItem = React.memo(({ todo, provided, ...props }) => {
                     </ListItemIcon>
                     <ListItemText id={labelId} primary={todo.title} />
                     <ListItemSecondaryAction>
+                        <DurationChip type={todo.duration} />
                         <Checkbox
                             edge="start"
                             checked={todo.completed}
@@ -63,9 +67,7 @@ const TodoItem = React.memo(({ todo, provided, ...props }) => {
                             onClick={handleToggle}
                             inputProps={{ 'aria-labelledby': labelId }}
                         />
-                        <IconButton edge="end" aria-label="comments">
-                            <MoreVerticalIcon />
-                        </IconButton>
+                        <TodoItemMenu />
                     </ListItemSecondaryAction>
                 </ListItem>
             </div>
@@ -73,12 +75,7 @@ const TodoItem = React.memo(({ todo, provided, ...props }) => {
     }
     
     return (
-        <ListItem dense>
-            <ListItemIcon>
-                <IconButton edge="end" aria-label="comments">
-                    <DragIndicatorIcon />
-                </IconButton>
-            </ListItemIcon>
+        <ListItem>
             <ListItemText id={labelId} primary={todo.title} />
             <ListItemSecondaryAction>
                 <Checkbox
@@ -89,9 +86,7 @@ const TodoItem = React.memo(({ todo, provided, ...props }) => {
                     onClick={handleToggle}
                     inputProps={{ 'aria-labelledby': labelId }}
                 />
-                <IconButton edge="end" aria-label="comments">
-                    <MoreVerticalIcon />
-                </IconButton>
+                <TodoItemMenu />
             </ListItemSecondaryAction>
         </ListItem>
     )
