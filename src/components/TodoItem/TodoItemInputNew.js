@@ -14,7 +14,6 @@ const TodoItem = React.memo(({ provided, ...props }) => {
         }
     }
 
-    
     return (
         <ListItem dense>
             <ListItemIcon>

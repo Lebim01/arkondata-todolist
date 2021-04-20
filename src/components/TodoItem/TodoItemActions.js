@@ -2,7 +2,7 @@ import { Checkbox, Tooltip } from '@material-ui/core'
 
 import { useTodo } from 'src/context/todo'
 import TodoItemMenu from './TodoItemMenu'
-import DurationChip from './DurationChip'
+import DurationChip from './components/DurationChip'
 
 // Redux
 import { updateTodo } from 'src/redux/actions/todos'
