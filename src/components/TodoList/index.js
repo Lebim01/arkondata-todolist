@@ -1,11 +1,10 @@
-import { useState } from 'react'
-import List from '@material-ui/core/List'
-import Divider from '@material-ui/core/Divider'
 import { makeStyles } from '@material-ui/core/styles';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { Card, CardContent, Typography } from '@material-ui/core';
+import { Card, CardContent, Typography, List, Divider } from '@material-ui/core';
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+
+import DraggableContextProvider from 'src/context/draggable'
 
 import { addTodo, reorderTodo } from 'src/redux/actions/todos'
 
@@ -20,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const DropZone = styled.div``;
-
 
 const TodoList = ({ todos, addTodo, reorder, ...props }) => {
     const classes = useStyles();
@@ -74,14 +72,17 @@ const TodoList = ({ todos, addTodo, reorder, ...props }) => {
                                         <div key={todo.uuid}>
                                             <Draggable draggableId={todo.uuid} index={i}>
                                                 {(dragProvided, dragSnapshot) => 
-                                                    <TodoItem 
-                                                        idx={i}
-                                                        uuid={todo.uuid}
+                                                    <DraggableContextProvider 
                                                         provided={dragProvided} 
-                                                        isDragging={dragSnapshot.isDragging}
+                                                        isDragging={dragSnapshot.isDragging} 
                                                         isGroupedOver={Boolean(dragSnapshot.combineTargetFor)}
-                                                        draggable
-                                                    />  
+                                                    >
+                                                        <TodoItem 
+                                                            idx={i}
+                                                            uuid={todo.uuid}
+                                                            draggable
+                                                        />  
+                                                    </DraggableContextProvider>
                                                 }
                                             </Draggable>
                                             <Divider />

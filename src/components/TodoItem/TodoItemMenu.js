@@ -6,6 +6,9 @@ import PlayIcon from '@material-ui/icons/PlayArrow'
 import RestartIcon from '@material-ui/icons/Autorenew'
 import PauseIcon from '@material-ui/icons/Pause'
 import StopIcon from '@material-ui/icons/Stop'
+import EditIcon from '@material-ui/icons/Edit'
+
+import { useTodo } from 'src/context/todo'
 
 const StyledMenuItem = withStyles((theme) => ({
     root: {
@@ -18,8 +21,9 @@ const StyledMenuItem = withStyles((theme) => ({
     },
 }))(MenuItem);
 
-const TodoItemMenu = ({ completed }) => {
+const TodoItemMenu = () => {
     const [anchorEl, setAnchorEl] = useState(null);
+    const { todo }  = useTodo()
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -41,7 +45,7 @@ const TodoItemMenu = ({ completed }) => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                { !completed &&
+                { !todo.completed &&
                     <>
                         <Typography style={{ paddingLeft: 16 }} variant="subtitle2">Temporizador</Typography>
                         <StyledMenuItem onClick={handleClose}>
@@ -71,11 +75,18 @@ const TodoItemMenu = ({ completed }) => {
                         <Divider />
                     </>
                 }
+                <Typography style={{ paddingLeft: 16, paddingTop: 8 }} variant="subtitle2">Tarea</Typography>
+                <StyledMenuItem onClick={handleClose}>
+                    <ListItemIcon>
+                        <EditIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText>Editar</ListItemText>
+                </StyledMenuItem>
                 <StyledMenuItem onClick={handleClose}>
                     <ListItemIcon>
                         <TrashIcon fontSize="small" />
                     </ListItemIcon>
-                    <ListItemText>Eliminar tarea</ListItemText>
+                    <ListItemText>Eliminar</ListItemText>
                 </StyledMenuItem>
             </Menu>
         </>

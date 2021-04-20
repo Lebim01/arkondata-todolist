@@ -7,6 +7,11 @@ import DragIndicatorIcon from '@material-ui/icons/DragIndicator'
 import TodoItemMenu from './TodoItemMenu'
 import DurationChip from './DurationChip'
 
+// Context
+import { useTodo } from 'src/context/todo'
+import { useDraggable } from 'src/context/draggable'
+
+// Redux
 import { updateTodo } from 'src/redux/actions/todos'
 import { connect } from 'react-redux'
 
@@ -21,7 +26,10 @@ function getStyle(provided, style) {
     };
 }
 
-const DraggeblTodoItem = ({ provided, todo, ...props }) => {
+const DraggeblTodoItem = (props) => {
+    const { todo } = useTodo()
+    const { provided } = useDraggable()
+
     return (
         <div
             ref={provided.innerRef}
@@ -39,7 +47,10 @@ const DraggeblTodoItem = ({ provided, todo, ...props }) => {
     )
 }
 
-const TodoItemContent = ({ todo, provided, ...props }) => {
+const TodoItemContent = (props) => {
+    const { todo } = useTodo()
+    const { provided } = useDraggable()
+
     const handleToggle = () => {
         props.updateTodo && 
             props.updateTodo({
@@ -70,7 +81,7 @@ const TodoItemContent = ({ todo, provided, ...props }) => {
             }
             <ListItemText id={labelId} primary={todo.title} />
             <ListItemSecondaryAction>
-                <DurationChip duration={todo.duration} editable onSelect={selectDuration} />
+                <DurationChip duration={todo.duration} editable={!todo.completed} onSelect={selectDuration} />
                 <Tooltip title="Marcar como completada">
                     <Checkbox
                         edge="start"
@@ -81,7 +92,7 @@ const TodoItemContent = ({ todo, provided, ...props }) => {
                         inputProps={{ 'aria-labelledby': labelId }}
                     />
                 </Tooltip>
-                <TodoItemMenu completed={todo.completed} />
+                <TodoItemMenu />
             </ListItemSecondaryAction>
         </ListItem>
     )
@@ -101,16 +112,10 @@ const TodoItem = React.memo((props) => {
     )
 })
 
-const mapStateToProps = (state, props) => {
-    return {
-        todo: state.todos.todos.find(r => r.uuid === props.uuid)
-    }
-}
-
 const mapDispatchToProps = (dispatch) => {
     return {
         updateTodo: (item) => dispatch(updateTodo(item))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TodoItem)
+export default connect(null, mapDispatchToProps)(TodoItem)
