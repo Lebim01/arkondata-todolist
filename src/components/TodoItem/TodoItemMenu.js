@@ -1,20 +1,24 @@
 import { useState } from 'react'
-import { IconButton, Menu, MenuItem, Divider, ListItemText, ListItemIcon, withStyles } from '@material-ui/core'
+import { IconButton, Menu, MenuItem, Divider, ListItemText, ListItemIcon, withStyles, Typography } from '@material-ui/core'
 import MoreVerticalIcon from '@material-ui/icons/MoreVert'
 import TrashIcon from '@material-ui/icons/Delete'
+import PlayIcon from '@material-ui/icons/PlayArrow'
+import RestartIcon from '@material-ui/icons/Autorenew'
+import PauseIcon from '@material-ui/icons/Pause'
+import StopIcon from '@material-ui/icons/Stop'
 
 const StyledMenuItem = withStyles((theme) => ({
     root: {
-      '&:focus': {
-        backgroundColor: theme.palette.primary.main,
-        '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-          color: theme.palette.common.white,
+        '&:focus': {
+            backgroundColor: theme.palette.primary.main,
+            '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+                color: theme.palette.common.white,
+            },
         },
-      },
     },
-  }))(MenuItem);
+}))(MenuItem);
 
-const TodoItemMenu = (props) => {
+const TodoItemMenu = ({ completed }) => {
     const [anchorEl, setAnchorEl] = useState(null);
 
     const handleClick = (event) => {
@@ -37,11 +41,36 @@ const TodoItemMenu = (props) => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <MenuItem onClick={handleClose}>Iniciar temporizador</MenuItem>
-                <MenuItem onClick={handleClose}>Reiniciar temporizador</MenuItem>
-                <MenuItem onClick={handleClose}>Pausar temporizador</MenuItem>
-                <MenuItem onClick={handleClose}>Detener temporizador</MenuItem>
-                <Divider />
+                { !completed &&
+                    <>
+                        <Typography style={{ paddingLeft: 16 }} variant="subtitle2">Temporizador</Typography>
+                        <StyledMenuItem onClick={handleClose}>
+                            <ListItemIcon>
+                                <PlayIcon fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText>Iniciar</ListItemText>
+                        </StyledMenuItem>
+                        <StyledMenuItem onClick={handleClose}>
+                            <ListItemIcon>
+                                <RestartIcon fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText>Reiniciar</ListItemText>
+                        </StyledMenuItem>
+                        <StyledMenuItem onClick={handleClose}>
+                            <ListItemIcon>
+                                <PauseIcon fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText>Pausar</ListItemText>
+                        </StyledMenuItem>
+                        <StyledMenuItem onClick={handleClose}>
+                            <ListItemIcon>
+                                <StopIcon fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText>Detener</ListItemText>
+                        </StyledMenuItem>
+                        <Divider />
+                    </>
+                }
                 <StyledMenuItem onClick={handleClose}>
                     <ListItemIcon>
                         <TrashIcon fontSize="small" />

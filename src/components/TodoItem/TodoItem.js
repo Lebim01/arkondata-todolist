@@ -75,7 +75,7 @@ const TodoItem = React.memo(({ todo, provided, ...props }) => {
                             onClick={handleToggle}
                             inputProps={{ 'aria-labelledby': labelId }}
                         />
-                        <TodoItemMenu />
+                        <TodoItemMenu completed={todo.completed} />
                     </ListItemSecondaryAction>
                 </ListItem>
             </div>
@@ -95,7 +95,7 @@ const TodoItem = React.memo(({ todo, provided, ...props }) => {
                     onClick={handleToggle}
                     inputProps={{ 'aria-labelledby': labelId }}
                 />
-                <TodoItemMenu />
+                <TodoItemMenu completed={todo.completed} />
             </ListItemSecondaryAction>
         </ListItem>
     )
