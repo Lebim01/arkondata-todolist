@@ -21,8 +21,25 @@ function getStyle(provided, style) {
     };
 }
 
-const TodoItem = React.memo(({ todo, provided, ...props }) => {
+const DraggeblTodoItem = ({ provided, todo, ...props }) => {
+    return (
+        <div
+            ref={provided.innerRef}
+            isDragging={props.isDragging}
+            isGroupedOver={props.isGroupedOver}
+            {...provided.draggableProps}
+            style={getStyle(provided, {})}
+            data-is-dragging={props.isDragging}
+            data-testid={todo.uuid}
+            data-index={props.idx}
+            aria-label={todo.title}
+        >
+            {props.children}
+        </div>
+    )
+}
 
+const TodoItemContent = ({ todo, provided, ...props }) => {
     const handleToggle = () => {
         props.updateTodo && 
             props.updateTodo({
@@ -42,61 +59,45 @@ const TodoItem = React.memo(({ todo, provided, ...props }) => {
 
     const labelId = `checkbox-list-label-${todo.uuid}`;
 
+    return (
+        <ListItem dense={!!props.draggable}>
+            {props.draggable &&
+                <ListItemIcon>
+                    <IconButton edge="end" aria-label="comments" {...provided.dragHandleProps}>
+                        <DragIndicatorIcon />
+                    </IconButton>
+                </ListItemIcon>
+            }
+            <ListItemText id={labelId} primary={todo.title} />
+            <ListItemSecondaryAction>
+                <DurationChip duration={todo.duration} editable onSelect={selectDuration} />
+                <Tooltip title="Marcar como completada">
+                    <Checkbox
+                        edge="start"
+                        checked={todo.completed}
+                        tabIndex={-1}
+                        disableRipple
+                        onClick={handleToggle}
+                        inputProps={{ 'aria-labelledby': labelId }}
+                    />
+                </Tooltip>
+                <TodoItemMenu completed={todo.completed} />
+            </ListItemSecondaryAction>
+        </ListItem>
+    )
+}
+
+const TodoItem = React.memo((props) => {
     if(props.draggable){
         return (
-            <div
-                ref={provided.innerRef}
-                isDragging={props.isDragging}
-                isGroupedOver={props.isGroupedOver}
-                {...provided.draggableProps}
-                style={getStyle(provided, {})}
-                data-is-dragging={props.isDragging}
-                data-testid={todo.uuid}
-                data-index={props.idx}
-                aria-label={todo.title}
-            >
-                <ListItem dense>
-                    <ListItemIcon>
-                        <IconButton edge="end" aria-label="comments" {...provided.dragHandleProps}>
-                            <DragIndicatorIcon />
-                        </IconButton>
-                    </ListItemIcon>
-                    <ListItemText id={labelId} primary={todo.title} />
-                    <ListItemSecondaryAction>
-                        <DurationChip duration={todo.duration} editable onSelect={selectDuration} />
-                        <Tooltip title="Marcar como completada">
-                            <Checkbox
-                                edge="start"
-                                checked={todo.completed}
-                                tabIndex={-1}
-                                disableRipple
-                                onClick={handleToggle}
-                                inputProps={{ 'aria-labelledby': labelId }}
-                            />
-                        </Tooltip>
-                        <TodoItemMenu completed={todo.completed} />
-                    </ListItemSecondaryAction>
-                </ListItem>
-            </div>
+            <DraggeblTodoItem {...props}>
+                <TodoItemContent {...props} draggable />
+            </DraggeblTodoItem>
         )
     }
     
     return (
-        <ListItem>
-            <ListItemText id={labelId} primary={todo.title} />
-            <ListItemSecondaryAction>
-                <DurationChip duration={todo.duration} />
-                <Checkbox
-                    edge="start"
-                    checked={todo.completed}
-                    tabIndex={-1}
-                    disableRipple
-                    onClick={handleToggle}
-                    inputProps={{ 'aria-labelledby': labelId }}
-                />
-                <TodoItemMenu completed={todo.completed} />
-            </ListItemSecondaryAction>
-        </ListItem>
+        <TodoItemContent {...props} />
     )
 })
 
