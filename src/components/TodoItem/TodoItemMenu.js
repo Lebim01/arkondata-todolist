@@ -8,6 +8,10 @@ import PauseIcon from '@material-ui/icons/Pause'
 import StopIcon from '@material-ui/icons/Stop'
 import EditIcon from '@material-ui/icons/Edit'
 
+import { connect } from 'react-redux'
+import { updateTodo } from 'src/redux/actions/todos'
+
+import { useConfirm } from 'src/context/confirm'
 import { useTodo } from 'src/context/todo'
 
 const StyledMenuItem = withStyles((theme) => ({
@@ -24,6 +28,9 @@ const StyledMenuItem = withStyles((theme) => ({
 const TodoItemMenu = (props) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const { todo, updateTodo }  = useTodo()
+    const { open } = useConfirm()
+
+    const isActive = props.active && todo.uuid === props.active.uuid
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -34,11 +41,33 @@ const TodoItemMenu = (props) => {
     };
 
     const start = () => {
-        updateTodo({
-            active: true,
-            start_at: new Date()
-        })
-        handleClose()
+        if(props.active && !isActive){
+            open({
+                title: 'Confirmar',
+                description: 'Actualmente existe una tarea en curso ¿desea detenerla e iniciar esta?',
+                result: (result) => {
+                    if(result === true){
+                        props.updateActiveTodo({
+                            ...props.active,
+                            active: false
+                        })
+                        updateTodo({
+                            active: true,
+                            start_at: new Date()
+                        })
+                    }
+                }
+            })
+        }else{
+            /**
+             * Iniciar tarea
+             */
+            updateTodo({
+                active: true,
+                start_at: new Date()
+            })
+            handleClose()
+        }
     }
 
     return (
@@ -56,30 +85,36 @@ const TodoItemMenu = (props) => {
                 { !todo.completed &&
                     <>
                         <Typography style={{ paddingLeft: 16 }} variant="subtitle2">Temporizador</Typography>
-                        <StyledMenuItem onClick={start}>
-                            <ListItemIcon>
-                                <PlayIcon fontSize="small" />
-                            </ListItemIcon>
-                            <ListItemText>Iniciar</ListItemText>
-                        </StyledMenuItem>
-                        <StyledMenuItem onClick={handleClose}>
-                            <ListItemIcon>
-                                <RestartIcon fontSize="small" />
-                            </ListItemIcon>
-                            <ListItemText>Reiniciar</ListItemText>
-                        </StyledMenuItem>
-                        <StyledMenuItem onClick={handleClose}>
-                            <ListItemIcon>
-                                <PauseIcon fontSize="small" />
-                            </ListItemIcon>
-                            <ListItemText>Pausar</ListItemText>
-                        </StyledMenuItem>
-                        <StyledMenuItem onClick={handleClose}>
-                            <ListItemIcon>
-                                <StopIcon fontSize="small" />
-                            </ListItemIcon>
-                            <ListItemText>Detener</ListItemText>
-                        </StyledMenuItem>
+                        { !isActive &&
+                            <StyledMenuItem onClick={start}>
+                                <ListItemIcon>
+                                    <PlayIcon fontSize="small" />
+                                </ListItemIcon>
+                                <ListItemText>Iniciar</ListItemText>
+                            </StyledMenuItem>
+                        }
+                        { isActive &&
+                            <>
+                                <StyledMenuItem onClick={handleClose}>
+                                    <ListItemIcon>
+                                        <RestartIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    <ListItemText>Reiniciar</ListItemText>
+                                </StyledMenuItem>
+                                <StyledMenuItem onClick={handleClose}>
+                                    <ListItemIcon>
+                                        <PauseIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    <ListItemText>Pausar</ListItemText>
+                                </StyledMenuItem>
+                                <StyledMenuItem onClick={handleClose}>
+                                    <ListItemIcon>
+                                        <StopIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    <ListItemText>Detener</ListItemText>
+                                </StyledMenuItem>
+                            </>
+                        }
                         <Divider />
                     </>
                 }
@@ -101,4 +136,12 @@ const TodoItemMenu = (props) => {
     )
 }
 
-export default TodoItemMenu
+const mapStateToProps = (state) => ({
+    active: state.todos.todos.find(r => r.active === true)
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    updateActiveTodo: (item) => dispatch(updateTodo(item))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoItemMenu)

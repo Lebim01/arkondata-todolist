@@ -6,7 +6,6 @@ const INITIAL_STATE = {
 }
 
 function todos(state = INITIAL_STATE, action) {
-    
     switch(action.type){
         case ACTIONS.ADD_TODO:
             return {
