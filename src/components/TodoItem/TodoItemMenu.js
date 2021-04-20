@@ -1,6 +1,18 @@
 import { useState } from 'react'
-import { IconButton, Menu, MenuItem, Divider, Typography } from '@material-ui/core'
+import { IconButton, Menu, MenuItem, Divider, ListItemText, ListItemIcon, withStyles } from '@material-ui/core'
 import MoreVerticalIcon from '@material-ui/icons/MoreVert'
+import TrashIcon from '@material-ui/icons/Delete'
+
+const StyledMenuItem = withStyles((theme) => ({
+    root: {
+      '&:focus': {
+        backgroundColor: theme.palette.primary.main,
+        '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+          color: theme.palette.common.white,
+        },
+      },
+    },
+  }))(MenuItem);
 
 const TodoItemMenu = (props) => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -25,13 +37,17 @@ const TodoItemMenu = (props) => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <MenuItem onClick={handleClose}>Modificar Duración</MenuItem>
-                <MenuItem onClick={handleClose}>Eliminar tarea</MenuItem>
-                <Divider />
                 <MenuItem onClick={handleClose}>Iniciar temporizador</MenuItem>
                 <MenuItem onClick={handleClose}>Reiniciar temporizador</MenuItem>
                 <MenuItem onClick={handleClose}>Pausar temporizador</MenuItem>
                 <MenuItem onClick={handleClose}>Detener temporizador</MenuItem>
+                <Divider />
+                <StyledMenuItem onClick={handleClose}>
+                    <ListItemIcon>
+                        <TrashIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText>Eliminar tarea</ListItemText>
+                </StyledMenuItem>
             </Menu>
         </>
     )

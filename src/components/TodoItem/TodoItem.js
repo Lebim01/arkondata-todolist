@@ -35,6 +35,14 @@ const TodoItem = React.memo(({ todo, provided, ...props }) => {
             })
     };
 
+    const selectDuration = (duration) => {
+        props.updateTodo &&
+            props.updateTodo({
+                ...todo,
+                duration
+            })
+    }
+
     const labelId = `checkbox-list-label-${todo.uuid}`;
 
     if(props.draggable){
@@ -58,7 +66,7 @@ const TodoItem = React.memo(({ todo, provided, ...props }) => {
                     </ListItemIcon>
                     <ListItemText id={labelId} primary={todo.title} />
                     <ListItemSecondaryAction>
-                        <DurationChip type={todo.duration} />
+                        <DurationChip duration={todo.duration} editable onSelect={selectDuration} />
                         <Checkbox
                             edge="start"
                             checked={todo.completed}
@@ -78,6 +86,7 @@ const TodoItem = React.memo(({ todo, provided, ...props }) => {
         <ListItem>
             <ListItemText id={labelId} primary={todo.title} />
             <ListItemSecondaryAction>
+                <DurationChip type={todo.duration} />
                 <Checkbox
                     edge="start"
                     checked={todo.completed}

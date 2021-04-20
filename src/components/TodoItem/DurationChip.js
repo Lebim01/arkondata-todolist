@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { makeStyles, Chip, Tooltip, Menu, MenuItem } from '@material-ui/core'
+import { makeStyles, Chip, Menu, MenuItem } from '@material-ui/core'
 
 import { connect } from 'react-redux'
 
@@ -13,40 +13,60 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: theme.spacing(2),
     },
     success: {
-        backgroundColor: theme.palette.success.main
+        backgroundColor: theme.palette.success.main,
+        '&:focus': {
+            backgroundColor: theme.palette.success.main,
+        },
+        '&:hover': {
+            backgroundColor: theme.palette.success.main,
+        }
     },
     info: {
-        backgroundColor: theme.palette.info.main
+        backgroundColor: theme.palette.info.main,
+        '&:focus': {
+            backgroundColor: theme.palette.info.main,
+        },
+        '&:hover': {
+            backgroundColor: theme.palette.info.main,
+        }
     },
     warning: {
-        backgroundColor: theme.palette.warning.main
+        backgroundColor: theme.palette.warning.main,
+        '&:focus': {
+            backgroundColor: theme.palette.warning.main,
+        },
+        '&:hover': {
+            backgroundColor: theme.palette.warning.main,
+        }
     }
 }));
 
-const DurationChip = ({ title, color, description, durations }) => {
+const DurationChip = ({ duration, durations, ...props }) => {
     const classes = useStyles()
     const [anchorEl, setAnchorEl] = useState(null);
 
-    console.log(classes)
-
     const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
+        if(props.editable)
+            setAnchorEl(event.currentTarget);
     };
 
     const handleClose = () => {
         setAnchorEl(null);
     };
 
+    const select = (item) => {
+        handleClose()
+        props.onSelect && props.onSelect(item)
+    }
+
     return (
         <>
-            <Tooltip title={description}>
-                <div className={classes.root}>
-                    {title 
-                        ? <Chip label={title} color={color} onClick={handleClick} />
-                        : <Chip label={'Duración'} color="danger" onClick={handleClick} />
-                    }
-                </div>
-            </Tooltip>
+            <div className={classes.root}>
+                {duration.title 
+                    ? <Chip label={duration.title} className={classes[duration.color]} onClick={handleClick} />
+                    : <Chip label={'Duración'} color="danger" onClick={handleClick} />
+                }
+            </div>
             <Menu
                 id="simple-menu"
                 anchorEl={anchorEl}
@@ -55,8 +75,8 @@ const DurationChip = ({ title, color, description, durations }) => {
                 onClose={handleClose}
             >
                 {durations.map((r, i) => 
-                    <MenuItem key={i.toString()} onClick={handleClose}>
-                        {r.description} 
+                    <MenuItem key={i.toString()} onClick={() => select(r)}>
+                        {r.description}
                         <div className={classes.spacing}>
                             <Chip label={r.title} className={classes[r.color]} />
                         </div>
