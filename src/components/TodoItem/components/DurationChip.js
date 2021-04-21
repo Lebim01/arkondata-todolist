@@ -61,20 +61,25 @@ const DurationChip = ({ duration, durations, ...props }) => {
 
     return (
         <>
-            <div className={classes.root}>
-                {duration.title 
-                    ? (
-                        <Tooltip title={`Duración (${duration.description})`}>
-                            <Chip label={duration.title} className={classes[duration.color]} onClick={handleClick} />
-                        </Tooltip>
-                    )
-                    : (
-                        <Tooltip title={`Seleccione la duración`}>
-                            <Chip label={'Duración'} color="danger" onClick={handleClick} />
-                        </Tooltip>
-                    )
-                }
-            </div>
+            {props.button
+                ? props.button(handleClick)
+                : (
+                    <div className={classes.root}>
+                        {duration.title 
+                            ? (
+                                <Tooltip title={`Duración (${duration.description})`}>
+                                    <Chip label={duration.title} className={classes[duration.color]} onClick={handleClick} />
+                                </Tooltip>
+                            )
+                            : (
+                                <Tooltip title={`Seleccione la duración`}>
+                                    <Chip label={'Duración'} color="danger" onClick={handleClick} />
+                                </Tooltip>
+                            )
+                        }
+                    </div>
+                )
+            }
             <Menu
                 id="simple-menu"
                 anchorEl={anchorEl}
@@ -82,6 +87,11 @@ const DurationChip = ({ duration, durations, ...props }) => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
+                {props.all &&
+                    <MenuItem onClick={() => select(null)}>
+                        Todos
+                    </MenuItem>
+                }
                 {durations.map((r, i) => 
                     <MenuItem key={i.toString()} onClick={() => select(r)}>
                         {r.description}

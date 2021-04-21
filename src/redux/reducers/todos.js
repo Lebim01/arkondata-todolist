@@ -2,7 +2,8 @@ import { ACTIONS } from '../actions/todos'
 import { reorder } from 'src/helpers/array'
 
 const INITIAL_STATE = {
-    todos: []
+    todos: [],
+    activeFilter: null
 }
 
 function todos(state = INITIAL_STATE, action) {
@@ -29,6 +30,11 @@ function todos(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 todos: _todos
+            }
+        case ACTIONS.FILTER_TODO_LIST:
+            return {
+                ...state,
+                activeFilter: action.payload
             }
     }
 

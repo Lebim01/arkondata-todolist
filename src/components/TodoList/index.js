@@ -9,6 +9,8 @@ import TodoItemInputNew from 'src/components/TodoItem/TodoItemInputNew'
 import TodoListCompleted from 'src/components/TodoListCompleted';
 import TodoListItemDraggable from './TodoListItemDraggable';
 import TodoListDraggable from './TodoList'
+import TodoListFilter from './TodoListFilter'
+import { Fragment } from 'react';
 
 /**
  * Este es el area permitida para arrastrar elementos
@@ -21,6 +23,7 @@ const TodoList = ({ todos, addTodo, ...props }) => {
             <CardContent>
                 <Typography variant="h4">
                     Listado de tareas
+                    <TodoListFilter />
                 </Typography>
                 <TodoListDraggable>
                     {(dropProvided) => 
@@ -43,8 +46,8 @@ const TodoList = ({ todos, addTodo, ...props }) => {
                              */}
                             <DropZone ref={dropProvided.innerRef}>
                                 {todos.map((todo, i) =>
-                                    <>
-                                        <TodoListItemDraggable todo={todo} idx={i} key={todo.uuid}>
+                                    <Fragment key={todo.uuid}>
+                                        <TodoListItemDraggable todo={todo} idx={i}>
                                             <TodoItem 
                                                 idx={i}
                                                 uuid={todo.uuid}
@@ -52,7 +55,7 @@ const TodoList = ({ todos, addTodo, ...props }) => {
                                             />
                                         </TodoListItemDraggable>
                                         <Divider />
-                                    </>
+                                    </Fragment>
                                 )}
                                 {dropProvided.placeholder}
                             </DropZone>
@@ -74,7 +77,7 @@ const TodoList = ({ todos, addTodo, ...props }) => {
 
 const mapStateToProps = (state) => ({
     activeTodo: state.todos.todos.find(r => r.active === true),
-    todos: state.todos.todos.filter(r => r.completed === false && !r.active),
+    todos: state.todos.todos.filter(r => r.completed === false && !r.active && (state.todos.activeFilter ? r.duration && r.duration.id === state.todos.activeFilter : true)),
     hasCompleted: state.todos.todos.find(r => r.completed === true)
 })
 
