@@ -28,6 +28,9 @@ const useTimer = ({ progress, duration, ...props }) => {
     useEffect(() => {
         if(running){
             props.onTimeUpdate && props.onTimeUpdate(duration - time)
+
+            if(time === 0)
+                props.onExpire && props.onExpire()
         }
     }, [time])
 

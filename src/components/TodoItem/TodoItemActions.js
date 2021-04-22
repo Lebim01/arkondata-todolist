@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { secondsToTimeStr } from 'src/helpers/time'
 import { Checkbox, Tooltip, Chip } from '@material-ui/core'
 import AlarmIcon from '@material-ui/icons/Alarm'
+import CheckIcon from '@material-ui/icons/AssignmentTurnedIn';
 import useTimer from 'src/hooks/useTimer';
 import { useTodo } from 'src/context/todo'
 import TodoItemMenu from './TodoItemMenu'
@@ -11,13 +12,21 @@ import _ from 'lodash';
 const TodoItemActions = (props) => {
     const { todo, updateTodo } = useTodo()
 
-    const { time, start, pause, reset } = useTimer({
+    const { time, start, pause } = useTimer({
         progress: todo.progress,
         duration: !_.isEmpty(todo.duration) ? todo.duration.secDuration : 0,
         onTimeUpdate: (progress) => {
             if(todo.active){
                 updateTodo({
                     progress
+                })
+            }
+        },
+        onExpire: () => {
+            if(todo.active){
+                updateTodo({
+                    completed: true,
+                    active: false
                 })
             }
         }
@@ -33,6 +42,7 @@ const TodoItemActions = (props) => {
 
     const handleToggle = () => {
         updateTodo({
+            active: false,
             completed: !todo.completed,
             completed_at: !todo.completed ? new Date() : null
         })
@@ -53,8 +63,8 @@ const TodoItemActions = (props) => {
             {!_.isEmpty(todo.duration) && 
                 <Chip
                     size="small"
-                    avatar={<AlarmIcon />}
-                    label={secondsToTimeStr(time)}
+                    avatar={todo.completed ? <CheckIcon />  : <AlarmIcon />}
+                    label={secondsToTimeStr(todo.completed ? todo.progress : time)}
                 />
             }
             <DurationChip duration={todo.duration} editable={!todo.completed} onSelect={selectDuration} />

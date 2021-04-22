@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect } from 'react'
+import { createContext, useContext } from 'react'
 import { connect } from 'react-redux'
 import { updateTodo, updateTodo as _updateTodo } from 'src/redux/actions/todos'
 
