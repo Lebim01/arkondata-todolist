@@ -1,8 +1,8 @@
 import React from 'react'
-import { ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, makeStyles } from '@material-ui/core'
-import InputBase from '@material-ui/core/InputBase'
+import { ListItem, ListItemIcon, ListItemSecondaryAction, makeStyles } from '@material-ui/core'
 
 import TodoItemActions from './TodoItemActions'
+import TodoItemTitle from './TodoItemTitle'
 
 import IconButton from '@material-ui/core/IconButton';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator'
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 
 const TodoItem = React.memo((props) => {
     const classes = useStyles()
-    const { todo, updateTodo } = useTodo()
+    const { todo } = useTodo()
     const { provided } = useDraggable()
 
     return (
@@ -31,18 +31,7 @@ const TodoItem = React.memo((props) => {
                     </IconButton>
                 </ListItemIcon>
             }
-            { todo.completed
-                ? (
-                    <ListItemText primary={todo.title} />
-                )
-                : (
-                    <InputBase 
-                        style={{ width: '100%' }} 
-                        value={todo.title}
-                        onChange={(e) => updateTodo({ title: e.target.value })}
-                    />
-                )
-            }
+            <TodoItemTitle />
             <ListItemSecondaryAction>
                 <TodoItemActions />
             </ListItemSecondaryAction>

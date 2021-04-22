@@ -9,7 +9,7 @@ import TodoItemMenu from './TodoItemMenu'
 import DurationChip from './components/DurationChip'
 import _ from 'lodash';
 
-const TodoItemActions = (props) => {
+const TodoItemActions = () => {
     const { todo, updateTodo } = useTodo()
 
     const { time, start, pause } = useTimer({
