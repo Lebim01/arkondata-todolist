@@ -1,8 +1,9 @@
 import { ACTIONS } from '../actions/todos'
 import { reorder } from 'src/helpers/array'
+import { getData } from 'fakeData'
 
 const INITIAL_STATE = {
-    todos: [],
+    todos: getData(),
     activeFilter: null
 }
 

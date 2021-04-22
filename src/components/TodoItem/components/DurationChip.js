@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { purple } from '@material-ui/core/colors';
 import { makeStyles, Chip, Menu, MenuItem, Tooltip } from '@material-ui/core'
 
 import { connect } from 'react-redux'
@@ -31,12 +32,12 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     warning: {
-        backgroundColor: theme.palette.warning.main,
+        backgroundColor: '#ab37f2',
         '&:focus': {
-            backgroundColor: theme.palette.warning.main,
+            backgroundColor: '#ab37f2',
         },
         '&:hover': {
-            backgroundColor: theme.palette.warning.main,
+            backgroundColor: '#ab37f2'
         }
     }
 }));

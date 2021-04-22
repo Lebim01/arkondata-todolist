@@ -18,7 +18,7 @@ const NoticeDialog = () => {
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={close} color="secondary">
+                <Button onClick={close} color="primary">
                     Cerrar
                 </Button>
             </DialogActions>

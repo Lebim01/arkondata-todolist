@@ -18,10 +18,10 @@ const ConfirmDialog = () => {
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={close} color="primary">
+                <Button onClick={close} color="secondary">
                     Cancelar
                 </Button>
-                <Button onClick={() => close(true)} color="secondary" autoFocus>
+                <Button onClick={() => close(true)} color="primary" autoFocus>
                     Aceptar
                 </Button>
             </DialogActions>
