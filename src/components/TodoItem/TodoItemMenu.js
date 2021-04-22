@@ -7,10 +7,9 @@ import PlayIcon from '@material-ui/icons/PlayArrow'
 import RestartIcon from '@material-ui/icons/Autorenew'
 import PauseIcon from '@material-ui/icons/Pause'
 import StopIcon from '@material-ui/icons/Stop'
-import EditIcon from '@material-ui/icons/Edit'
 
 import { connect } from 'react-redux'
-import { updateTodo } from 'src/redux/actions/todos'
+import { updateTodo, deleteTodo } from 'src/redux/actions/todos'
 
 import { useConfirm } from 'src/context/confirm'
 import { useDialog } from 'src/context/dialog'
@@ -93,6 +92,18 @@ const TodoItemMenu = (props) => {
         handleClose()
     }
 
+    const deleteTodo = () => {
+        openConfirm({
+            title: 'Confirmar',
+            description: 'Esta tarea se eliminara permanentemente',
+            result: (result) => {
+                if(result === true){
+                    props.deleteTodo(todo.uuid)
+                }
+            }
+        })
+    }
+
     return (
         <>
             <IconButton edge="end" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
@@ -142,13 +153,7 @@ const TodoItemMenu = (props) => {
                     </div>
                 }
                 <Typography style={{ paddingLeft: 16, paddingTop: 8 }} variant="subtitle2">Tarea</Typography>
-                <StyledMenuItem onClick={handleClose}>
-                    <ListItemIcon>
-                        <EditIcon fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText>Editar</ListItemText>
-                </StyledMenuItem>
-                <StyledMenuItem onClick={handleClose}>
+                <StyledMenuItem onClick={deleteTodo}>
                     <ListItemIcon>
                         <TrashIcon fontSize="small" />
                     </ListItemIcon>
@@ -164,7 +169,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    updateActiveTodo: (item) => dispatch(updateTodo(item))
+    updateActiveTodo: (item) => dispatch(updateTodo(item)),
+    deleteTodo: (uuid) => dispatch(deleteTodo(uuid))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoItemMenu)

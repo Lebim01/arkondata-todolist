@@ -36,6 +36,11 @@ function todos(state = INITIAL_STATE, action) {
                 ...state,
                 activeFilter: action.payload
             }
+        case ACTIONS.DELETE_TODO:
+            return {
+                ...state,
+                todos: [...state.todos].filter(r => r.uuid !== action.payload)
+            }
     }
 
     return state

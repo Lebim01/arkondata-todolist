@@ -4,7 +4,8 @@ export const ACTIONS = {
     ADD_TODO: 'ADD_TODO',
     REORDER_TODO: 'REORDER_TODO',
     UPDATE_TODO: 'UPDATE_TODO',
-    FILTER_TODO_LIST: 'FILTER_TODO_LIST'
+    FILTER_TODO_LIST: 'FILTER_TODO_LIST',
+    DELETE_TODO: 'DELETE_TODO'
 }
 
 export const addTodo = (item) => {
@@ -40,5 +41,12 @@ export const filter = (item) => {
     return {
         type: ACTIONS.FILTER_TODO_LIST,
         payload: item
+    }
+}
+
+export const deleteTodo = (uuid) => {
+    return {
+        type: ACTIONS.DELETE_TODO,
+        payload: uuid
     }
 }
