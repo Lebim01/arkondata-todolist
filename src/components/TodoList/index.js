@@ -1,8 +1,10 @@
-import { Card, CardContent, Typography, Divider } from '@material-ui/core';
+import { Card, CardContent, Typography, Divider, Grid, Button } from '@material-ui/core';
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
 import { addTodo } from 'src/redux/actions/todos'
+
+import AssessmentIcon from '@material-ui/icons/Assessment';
 
 import TodoItem from 'src/components/TodoItem'
 import TodoItemInputNew from 'src/components/TodoItem/TodoItemInputNew'
@@ -11,6 +13,7 @@ import TodoListItemDraggable from './TodoListItemDraggable';
 import TodoListDraggable from './TodoList'
 import TodoListFilter from './TodoListFilter'
 import { Fragment } from 'react';
+import { useRouter } from 'next/router';
 
 /**
  * Este es el area permitida para arrastrar elementos
@@ -18,13 +21,28 @@ import { Fragment } from 'react';
 const DropZone = styled.div``;
 
 const TodoList = ({ todos, addTodo, ...props }) => {
+    const router = useRouter()
+
+    const goCharts = ( ) => {
+        router.push('/charts')
+    }
+
     return (
         <Card elevation={2}>
             <CardContent>
-                <Typography variant="h4">
-                    Listado de tareas
-                    <TodoListFilter />
-                </Typography>
+                <Grid container spacing={3}>
+                    <Grid item xs>
+                        <Typography variant="h4">
+                            Listado de tareas
+                            <TodoListFilter />
+                        </Typography>
+                    </Grid>
+                    <Grid item>
+                        <Button onClick={goCharts}>
+                            Ver graficas <AssessmentIcon style={{ marginLeft: 10 }} />
+                        </Button>
+                    </Grid>
+                </Grid>
                 <TodoListDraggable>
                     {(dropProvided) => 
                         <>

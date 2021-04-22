@@ -26,7 +26,7 @@ const TodoListCompleted = ({ todos, ...props }) => {
                 aria-controls="panel1a-content"
                 id="panel1a-header"
             >
-                <Typography className={classes.heading}>Tareas completadas ({ todos.length })</Typography>
+                <Typography className={classes.heading}>Tareas completadas ({ props.total })</Typography>
             </AccordionSummary>
             <AccordionDetails>
                 <List className={classes.root}>
@@ -46,7 +46,8 @@ const TodoListCompleted = ({ todos, ...props }) => {
 }
 
 const mapStateToProps = (state) => ({
-    todos: state.todos.todos.filter(r => r.completed === true).sort((a, b) => b.completed_at - a.completed_at)
+    total: state.todos.todos.filter(r => r.completed === true).length,
+    todos: state.todos.todos.filter(r => r.completed === true && (state.todos.activeFilter ? r.duration && r.duration.id === state.todos.activeFilter : true)).sort((a, b) => b.completed_at - a.completed_at)
 })
 
 export default connect(mapStateToProps)(TodoListCompleted)

@@ -1,5 +1,5 @@
 import React from 'react'
-import { ListItem, ListItemIcon, ListItemSecondaryAction, makeStyles } from '@material-ui/core'
+import { ListItem, ListItemIcon, ListItemSecondaryAction, makeStyles, Grid } from '@material-ui/core'
 
 import TodoItemActions from './TodoItemActions'
 import TodoItemTitle from './TodoItemTitle'
@@ -24,17 +24,25 @@ const TodoItem = React.memo((props) => {
 
     return (
         <ListItem dense={!!props.draggable} className={todo.active ? classes.root : ''}>
-            {props.draggable &&
-                <ListItemIcon>
-                    <IconButton edge="end" aria-label="comments" {...provided.dragHandleProps}>
-                        <DragIndicatorIcon />
-                    </IconButton>
-                </ListItemIcon>
-            }
-            <TodoItemTitle />
-            <ListItemSecondaryAction>
-                <TodoItemActions />
-            </ListItemSecondaryAction>
+            <Grid container spacing={3}>
+                {props.draggable &&
+                    <Grid item xs={1}>
+                        <ListItemIcon>
+                            <IconButton edge="end" aria-label="comments" {...provided.dragHandleProps}>
+                                <DragIndicatorIcon />
+                            </IconButton>
+                        </ListItemIcon>
+                    </Grid>
+                }
+                <Grid item xs>
+                    <TodoItemTitle />
+                </Grid>
+                <Grid item xs>
+                    <ListItemSecondaryAction>
+                        <TodoItemActions />
+                    </ListItemSecondaryAction>
+                </Grid>
+            </Grid>
         </ListItem>
     )
 })
