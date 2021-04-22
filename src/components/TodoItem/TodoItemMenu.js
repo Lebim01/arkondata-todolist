@@ -92,6 +92,11 @@ const TodoItemMenu = (props) => {
         handleClose()
     }
 
+    const stop = () => {
+        restart()
+        pause()
+    }
+
     const deleteTodo = () => {
         openConfirm({
             title: 'Confirmar',
@@ -141,7 +146,7 @@ const TodoItemMenu = (props) => {
                                     </ListItemIcon>
                                     <ListItemText>Pausar</ListItemText>
                                 </StyledMenuItem>
-                                <StyledMenuItem onClick={handleClose}>
+                                <StyledMenuItem onClick={stop}>
                                     <ListItemIcon>
                                         <StopIcon fontSize="small" />
                                     </ListItemIcon>
