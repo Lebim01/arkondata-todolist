@@ -93,8 +93,11 @@ const TodoItemMenu = (props) => {
     }
 
     const stop = () => {
-        restart()
-        pause()
+        updateTodo({
+            progress: 0,
+            active: false
+        })
+        handleClose()
     }
 
     const deleteTodo = () => {
