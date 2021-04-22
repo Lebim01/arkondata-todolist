@@ -61,8 +61,7 @@ const TodoItemMenu = (props) => {
                             active: false
                         })
                         updateTodo({
-                            active: true,
-                            start_at: new Date()
+                            active: true
                         })
                         handleClose()
                     }
@@ -73,8 +72,7 @@ const TodoItemMenu = (props) => {
              * Iniciar tarea
              */
             updateTodo({
-                active: true,
-                start_at: new Date()
+                active: true
             })
             handleClose()
         }
@@ -82,8 +80,8 @@ const TodoItemMenu = (props) => {
 
     const restart = () => {
         updateTodo({
-            start_at: new Date(),
-            progress: 0
+            progress: 0,
+            forceUpdate: Math.random()
         })
         handleClose()
     }
@@ -108,7 +106,7 @@ const TodoItemMenu = (props) => {
                 onClose={handleClose}
             >
                 { !todo.completed &&
-                    <>
+                    <div>
                         <Typography style={{ paddingLeft: 16 }} variant="subtitle2">Temporizador</Typography>
                         { !isActive &&
                             <StyledMenuItem onClick={start}>
@@ -141,7 +139,7 @@ const TodoItemMenu = (props) => {
                             </>
                         }
                         <Divider />
-                    </>
+                    </div>
                 }
                 <Typography style={{ paddingLeft: 16, paddingTop: 8 }} variant="subtitle2">Tarea</Typography>
                 <StyledMenuItem onClick={handleClose}>

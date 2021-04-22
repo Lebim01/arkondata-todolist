@@ -34,6 +34,7 @@ const TodoList = ({ todos, addTodo, ...props }) => {
                             {props.activeTodo &&
                                 <>
                                     <TodoItem
+                                        key={props.activeTodo.uuid}
                                         uuid={props.activeTodo.uuid}
                                         active
                                     />

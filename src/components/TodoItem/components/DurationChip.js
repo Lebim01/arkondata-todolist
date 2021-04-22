@@ -73,7 +73,7 @@ const DurationChip = ({ duration, durations, ...props }) => {
                             )
                             : (
                                 <Tooltip title={`Seleccione la duración`}>
-                                    <Chip label={'Duración'} color="danger" onClick={handleClick} />
+                                    <Chip label={'Duración'} onClick={handleClick} />
                                 </Tooltip>
                             )
                         }

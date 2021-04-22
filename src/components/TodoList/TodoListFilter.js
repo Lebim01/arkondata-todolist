@@ -11,21 +11,19 @@ const TodoListFilter = (props) => {
         props.filter(item !== null ? item.id : null)
     }
 
-    return (
-        <>
-            <Tooltip title="Filtrar">
-                <DurationChip 
-                    button={(handleClick) => (
-                        <IconButton onClick={handleClick}>
-                            <FilterListIcon />
-                        </IconButton>
-                    )} 
-                    all
-                    editable 
-                    onSelect={selectDuration} 
-                />
-            </Tooltip>
-        </>
+    return (  
+        <DurationChip 
+            button={(handleClick) => (
+                <Tooltip title="Filtrar">
+                    <IconButton onClick={handleClick} color={props.activeFilter ? 'secondary' : 'default'}>
+                        <FilterListIcon />
+                    </IconButton>
+                </Tooltip>
+            )} 
+            all
+            editable 
+            onSelect={selectDuration} 
+        />
     )
 }
 

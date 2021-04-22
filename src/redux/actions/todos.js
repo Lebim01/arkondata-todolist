@@ -1,4 +1,4 @@
-import { uuid } from 'uuidv4';
+import { v4 } from 'uuid';
 
 export const ACTIONS = {
     ADD_TODO: 'ADD_TODO',
@@ -12,7 +12,7 @@ export const addTodo = (item) => {
         type: ACTIONS.ADD_TODO,
         payload: {
             ...item,
-            uuid: uuid(),
+            uuid: v4(),
             progress: 0,
             active: false,
         }

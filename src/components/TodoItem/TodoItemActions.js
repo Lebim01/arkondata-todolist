@@ -2,25 +2,34 @@ import { useEffect } from 'react'
 import { secondsToTimeStr } from 'src/helpers/time'
 import { Checkbox, Tooltip, Chip } from '@material-ui/core'
 import AlarmIcon from '@material-ui/icons/Alarm'
-import { useTimer } from 'use-timer';
+import useTimer from 'src/hooks/useTimer';
 import { useTodo } from 'src/context/todo'
 import TodoItemMenu from './TodoItemMenu'
 import DurationChip from './components/DurationChip'
+import _ from 'lodash';
 
 const TodoItemActions = (props) => {
     const { todo, updateTodo } = useTodo()
 
     const { time, start, pause, reset } = useTimer({
-        initialTime: !_.isEmpty(todo.duration) ? (todo.duration.secDuration - todo.progress) : 0,
-        timerType: 'DECREMENTAL',
-        onTimeUpdate: (_time) => {
+        progress: todo.progress,
+        duration: !_.isEmpty(todo.duration) ? todo.duration.secDuration : 0,
+        onTimeUpdate: (progress) => {
             if(todo.active){
                 updateTodo({
-                    progress: todo.duration.secDuration - _time
+                    progress
                 })
             }
         }
     });
+
+    const resetTimer = () => {
+        if(todo.active){
+            start()
+        }else{
+            pause()
+        }
+    }
 
     const handleToggle = () => {
         updateTodo({
@@ -36,13 +45,8 @@ const TodoItemActions = (props) => {
     }
 
     useEffect(() => {
-        if(todo.active){
-            reset()
-            start()
-        }else{
-            pause()
-        }
-    }, [todo.active, todo.start_at])
+        resetTimer()
+    }, [todo.uuid, todo.active, JSON.stringify(todo.duration), todo.forceUpdate])
 
     return (
         <>
