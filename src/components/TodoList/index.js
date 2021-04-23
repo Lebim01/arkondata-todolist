@@ -94,11 +94,18 @@ const TodoList = ({ todos, addTodo, ...props }) => {
     )
 }
 
-const mapStateToProps = (state) => ({
-    activeTodo: state.todos.todos.find(r => r.active === true),
-    todos: state.todos.todos.filter(r => r.completed === false && !r.active && (state.todos.activeFilter ? r.duration && r.duration.id === state.todos.activeFilter : true)),
-    hasCompleted: state.todos.todos.find(r => r.completed === true)
-})
+const mapStateToProps = (state) => {
+    let pendingTodo = state.todos.todos.filter(r => r.completed === false && !r.active)
+    if(state.todos.activeFilter){
+        pendingTodo = pendingTodo.filter(r => r.duration && r.duration.secDuration >= state.todos.activeFilter.minDuration && r.duration.secDuration <= state.todos.activeFilter.maxDuration)
+    }
+
+    return {
+        activeTodo: state.todos.todos.find(r => r.active === true),
+        todos: pendingTodo,
+        hasCompleted: state.todos.todos.find(r => r.completed === true)
+    }
+}
 
 const mapDispatchToProps = (dispatch) => {
     return {

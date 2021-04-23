@@ -8,7 +8,7 @@ import DurationChip from 'src/components/TodoItem/components/DurationChip'
 const TodoListFilter = (props) => {
 
     const selectDuration = (item) => {
-        props.filter(item !== null ? item.id : null)
+        props.filter(item)
     }
 
     return (  

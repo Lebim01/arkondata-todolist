@@ -58,7 +58,7 @@ const DurationChip = ({ duration, durations, ...props }) => {
     const select = (item) => {
         props.onSelect && props.onSelect(item)
 
-        if(item.id !== -1)
+        if(!item || item.id !== -1)
             handleClose()
     }
 

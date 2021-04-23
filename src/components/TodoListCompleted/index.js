@@ -45,9 +45,16 @@ const TodoListCompleted = ({ todos, ...props }) => {
     )
 }
 
-const mapStateToProps = (state) => ({
-    total: state.todos.todos.filter(r => r.completed === true).length,
-    todos: state.todos.todos.filter(r => r.completed === true && (state.todos.activeFilter ? r.duration && r.duration.id === state.todos.activeFilter : true)).sort((a, b) => b.completed_at - a.completed_at)
-})
+const mapStateToProps = (state) => {
+    let completedTodo = state.todos.todos.filter(r => r.completed === true)
+    if(state.todos.activeFilter){
+        completedTodo = completedTodo.filter(r => r.duration.secDuration >= state.todos.activeFilter.minDuration && r.duration.secDuration <= state.todos.activeFilter.maxDuration)
+    }
+
+    return {
+        total: state.todos.todos.filter(r => r.completed === true).length,
+        todos: completedTodo
+    }
+}
 
 export default connect(mapStateToProps)(TodoListCompleted)
