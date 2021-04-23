@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { purple } from '@material-ui/core/colors';
 import { makeStyles, Chip, Menu, MenuItem, Tooltip } from '@material-ui/core'
 
 import { connect } from 'react-redux'
+import DurationCustomInput from './DurationCustomInput';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -56,8 +56,20 @@ const DurationChip = ({ duration, durations, ...props }) => {
     };
 
     const select = (item) => {
-        handleClose()
         props.onSelect && props.onSelect(item)
+
+        if(item.id !== -1)
+            handleClose()
+    }
+
+    const selectCustom = (hours = 0, minutes = 0) => {
+        select({
+            id: -1,
+            title: 'Custom',
+            secDuration: hours * 60 * 60 + minutes * 60,
+            hours,
+            minutes
+        })
     }
 
     return (
@@ -66,7 +78,7 @@ const DurationChip = ({ duration, durations, ...props }) => {
                 ? props.button(handleClick)
                 : (
                     <div className={classes.root}>
-                        {duration.title 
+                        {duration.id !== undefined
                             ? (
                                 <Tooltip title={`Duración (${duration.description})`}>
                                     <Chip label={duration.title} className={classes[duration.color]} onClick={handleClick} />
@@ -101,6 +113,14 @@ const DurationChip = ({ duration, durations, ...props }) => {
                         </div>
                     </MenuItem>
                 )}
+                {props.custom &&
+                    <div>
+                        <MenuItem onClick={() => duration.id === -1 ? selectCustom(duration.hours, duration.minutes) : selectCustom()}>
+                            Custom
+                        </MenuItem>
+                        { duration.id === -1 && <DurationCustomInput hours={duration.hours} minutes={duration.minutes} onChange={selectCustom} /> }
+                    </div>
+                }
             </Menu>
         </>
     )

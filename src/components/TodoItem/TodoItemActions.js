@@ -67,7 +67,7 @@ const TodoItemActions = () => {
                     label={secondsToTimeStr(todo.completed ? todo.progress : time)}
                 />
             }
-            <DurationChip duration={todo.duration} editable={!todo.completed} onSelect={selectDuration} />
+            <DurationChip duration={todo.duration} editable={!todo.completed} onSelect={selectDuration} custom />
             <Tooltip title="Marcar como completada">
                 <Checkbox
                     edge="start"
